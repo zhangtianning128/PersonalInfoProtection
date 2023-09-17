@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signature Verification</title>
+</head>
+<body>
+    <h1>Signature Verification</h1>
+    <form id="verify-form">
+        <label for="public_key">Public Key:</label><br>
+        <textarea id="public_key" name="public_key" rows="4" cols="50"></textarea><br>
+        <label for="signature">Signature:</label><br>
+        <input type="text" id="signature" name="signature"><br>
+        <input type="submit" value="Verify Signature">
+    </form>
+    <p id="result"></p>
+
+    <script>
+    document.getElementById('verify-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Get the public key and signature from the form
+        var public_key = document.getElementById('public_key').value;
+        var signature = document.getElementById('signature').value;
+
+        // Send the public key and signature to the server
+        fetch('http://localhost:5000/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'public_key': public_key,
+                'signature': signature
+            })
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Display the result
+            document.getElementById('result').textContent = data;
+        });
+    });
+    </script>
+</body>
+</html>

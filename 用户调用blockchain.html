@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Blockchain user Demo</h2>
+
+<button onclick="getChain()">Get Chain</button>
+<button onclick="registerNodes()">Register Nodes</button>
+
+<script>
+function getChain() {
+  fetch('http://localhost:5000/chain')
+  .then(response => response.json())
+  .then(data => alert(JSON.stringify(data)));
+}
+
+
+function addTransaction() {
+  const transactionData = prompt("Please enter transaction data in JSON format", "{}");
+  fetch('http://localhost:5000/transactions/new', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: transactionData,
+  })
+  .then(response => response.text())
+  .then(data => alert(data))
+  .catch((error) => {
+    alert('Error:' + error);
+  });
+}
+
+
+</script>
+
+</body>
+</html>

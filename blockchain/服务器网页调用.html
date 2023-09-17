@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Blockchain Demo</h2>
+
+<button onclick="getChain()">Get Chain</button>
+<button onclick="mineBlock()">Mine Block</button>
+<button onclick="registerNodes()">Register Nodes</button>
+
+<script>
+function getChain() {
+  fetch('http://localhost:5000/chain')
+  .then(response => response.json())
+  .then(data => alert(JSON.stringify(data)));
+}
+
+function mineBlock() {
+  fetch('http://localhost:5000/mine')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.text();
+  })
+  .then(data => alert(data))
+  .catch(error => alert('Error:' + error));
+}
+
+
+function registerNodes() {
+  const nodes = prompt("Please enter a list of nodes in JSON format", "[]");
+  fetch('http://localhost:5000/nodes/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: nodes,
+  })
+  .then(response => response.text())
+  .then(data => alert(data))
+  .catch((error) => {
+    alert('Error:' + error);
+  });
+}
+</script>
+
+</body>
+</html>
